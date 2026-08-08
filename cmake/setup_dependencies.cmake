@@ -5,10 +5,6 @@
 
 include(FetchContent)
 
-set(LIBMUMBLE_DEPENDENCY_DIR "${PROJECT_SOURCE_DIR}/_dependencies" CACHE STRING "Directory into which dependencies shall be downloaded into")
-
-set(FETCHCONTENT_BASE_DIR "${LIBMUMBLE_DEPENDENCY_DIR}")
-
 FetchContent_Declare(
 	GSL
 	GIT_REPOSITORY https://github.com/microsoft/GSL

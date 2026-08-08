@@ -9,7 +9,6 @@
     },
     {
       "name": "vcpkg",
-      "displayName": "vcpkg",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",

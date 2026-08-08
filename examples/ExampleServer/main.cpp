@@ -56,11 +56,11 @@ int32_t main(const int argc, const char **argv) {
 
 		const auto &tcp    = toml::find(nodeConf.second, "tcp");
 		const auto tcpIP   = toml::find< std::string_view >(tcp, "ip");
-		const auto tcpPort = toml::find< uint32_t >(tcp, "port");
+		const auto tcpPort = toml::find< uint16_t >(tcp, "port");
 
 		const auto &udp    = toml::find(nodeConf.second, "udp");
 		const auto udpIP   = toml::find< std::string_view >(udp, "ip");
-		const auto udpPort = toml::find< uint32_t >(udp, "port");
+		const auto udpPort = toml::find< uint16_t >(udp, "port");
 
 		auto node = std::make_unique< Node >(userManager, tcpIP, tcpPort, udpIP, udpPort, bandwidth);
 		if (!*node) {

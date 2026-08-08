@@ -30,8 +30,8 @@
 
 using namespace mumble;
 
-Node::Node(const std::shared_ptr< UserManager > &userManager, const std::string_view tcpIP, const uint32_t tcpPort,
-		   const std::string_view udpIP, const uint32_t udpPort, const uint32_t bandwidth)
+Node::Node(const std::shared_ptr< UserManager > &userManager, const std::string_view tcpIP, const uint16_t tcpPort,
+		   const std::string_view udpIP, const uint16_t udpPort, const uint32_t bandwidth)
 	: m_ok(false), m_bandwidth(bandwidth), m_userManager(userManager) {
 	Endpoint endpoint(tcpIP, tcpPort);
 	auto code = m_server.bindTCP(endpoint);
@@ -387,7 +387,7 @@ bool Node::startUDP() {
 		auto header = reinterpret_cast< const NetHeader * >(packet.data());
 		packet      = packet.subspan(sizeof(*header));
 
-		Pack pack(*header, packet.size());
+		Pack pack(*header, static_cast<uint32_t>(packet.size()));
 
 		const auto type = Message::type(pack);
 		if (type != Type::Audio) {

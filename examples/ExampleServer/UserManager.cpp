@@ -56,7 +56,7 @@ uint32_t UserManager::max() {
 uint32_t UserManager::num() {
 	std::shared_lock lock(m_mutex);
 
-	return m_users.size();
+	return static_cast<uint32_t>(m_users.size());
 }
 
 std::optional< uint32_t > UserManager::reserveID() {

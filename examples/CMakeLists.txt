@@ -44,11 +44,6 @@ foreach(TARGET IN LISTS EXAMPLES)
 
 	target_setup_default_flags(${TARGET})
 
-	set_target_properties(${TARGET}
-		PROPERTIES
-			RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}/example"
-	)
-
 	target_link_libraries(${TARGET}
 		PRIVATE
 			libmumble_example_base

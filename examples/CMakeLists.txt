@@ -13,7 +13,6 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(toml11)
 
-
 list(APPEND EXAMPLES
 	"ExampleClient"
 	"ExampleServer"
@@ -37,11 +36,24 @@ target_link_libraries(libmumble_example_base
 		toml11::toml11
 )
 
+# Copy development TLS certificate keys to compiled directory
+list(APPEND TLS_FILES
+	"cert.pem"
+	"key.pem"
+)
+
+foreach(TLS_FILE IN LISTS TLS_FILES)
+	file(
+		COPY "${CMAKE_CURRENT_SOURCE_DIR}/ExampleServer/${TLS_FILE}"
+		DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/ExampleServer/"
+	)
+endforeach()
+
 # All examples follow the convention of naming their subdirectory the same as their target.
 # Therefore we can use the TARGET variable to reference the directory as well as the target.
 foreach(TARGET IN LISTS EXAMPLES)
-	file(COPY
-		"${CMAKE_CURRENT_SOURCE_DIR}/${TARGET}/config.toml"
+	file(
+		COPY "${CMAKE_CURRENT_SOURCE_DIR}/${TARGET}/config.toml"
 		DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/"
 	)
 

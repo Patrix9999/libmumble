@@ -20,7 +20,7 @@ FetchContent_Declare(
 	GIT_REPOSITORY https://github.com/tnagler/quickpool.git
 	# The latest release currently still has issues that make it unusable for us
 	GIT_TAG        ddc415bec1fc624e1c6b21c1b47063ca2eef84de
-	GIT_SHALLOW    ON
+	GIT_SHALLOW    OFF
 )
 FetchContent_Declare(
 	wepoll

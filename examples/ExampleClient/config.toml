@@ -1,6 +1,11 @@
 [local]
   tcpIP = "::"
   tcpPort = 0
+
 [peer]
   tcpIP = "::1"
   tcpPort = 64738
+
+[auth]
+  username = "mumble"
+  password = "xd"

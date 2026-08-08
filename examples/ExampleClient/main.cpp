@@ -29,20 +29,27 @@
 
 using namespace mumble;
 
-static Connection::Feedback connectionFeedback(Connection &connection, std::condition_variable &cv) {
+static Connection::Feedback connectionFeedback(Connection &connection, std::condition_variable &cv,
+											   std::string username, std::string password) {
 	using Message = tcp::Message;
 	using Pack    = tcp::Pack;
 	using Type    = Message::Type;
 
 	Connection::Feedback feedback;
 
-	feedback.opened = [&connection]() {
+	feedback.opened = [&connection, username = std::move(username), password = std::move(password)]() {
 		printf("Connection opened!\n");
 
 		Message::Version ver;
 		ver.version = lib::version();
 		ver.release = "Custom client";
 		connection.write(Pack(ver).buf());
+
+		Message::Authenticate auth;
+		auth.username = username;
+		auth.password = password;
+		auth.opus     = true;
+		connection.write(Pack(auth).buf());
 	};
 
 	feedback.closed = [&cv]() {
@@ -107,6 +114,10 @@ int32_t main(const int argc, const char **argv) {
 	const auto peerTcpIP   = toml::find< std::string_view >(peer, "tcpIP");
 	const auto peerTcpPort = toml::find< uint16_t >(peer, "tcpPort");
 
+	const auto auth     = toml::find(conf, "auth");
+	const auto username = toml::find< std::string_view >(auth, "username");
+	const auto password = toml::find< std::string_view >(auth, "password");
+
 	const auto ret = Peer::connect({ peerTcpIP, peerTcpPort }, { localTcpIP, localTcpPort });
 	if (ret.first != Code::Success) {
 		printf("Peer::connect() failed with error \"%s\"!\n", text(ret.first).data());
@@ -116,7 +127,7 @@ int32_t main(const int argc, const char **argv) {
 	std::condition_variable cv;
 
 	auto connection = std::make_shared< Connection >(ret.second, false);
-	auto code       = (*connection)(connectionFeedback(*connection, cv));
+	auto code       = (*connection)(connectionFeedback(*connection, cv, std::string(username), std::string(password)));
 	if (code != Code::Success) {
 		printf("Connection() failed with error \"%s\"!\n", text(code).data());
 		return 4;

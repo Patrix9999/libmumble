@@ -1,22 +1,15 @@
 {
-  "version": 3,
-  "cmakeMinimumRequired": {
-    "major": 3,
-    "minor": 18,
-    "patch": 4
-  },
+  "version": 5,
   "configurePresets": [
     {
       "name": "ninja",
-      "displayName": "Ninja",
-      "binaryDir": "${sourceDir}/builds/${presetName}",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
       "generator": "Ninja"
     },
     {
-      "name": "ninja-vcpkg",
-      "displayName": "Ninja with vcpkg",
-      "binaryDir": "${sourceDir}/builds/${presetName}",
-      "generator": "Ninja",
+      "name": "vcpkg",
+      "displayName": "vcpkg",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "FILEPATH",
@@ -27,28 +20,187 @@
           "value": "OFF"
         }
       }
-    }
+    },
+
+
+    {
+      "name": "windows",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      },
+      "inherits": [ "ninja", "vcpkg" ]
+    },
+    {
+      "name": "linux",
+      "hidden": true,
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Linux"
+      },
+      "inherits": [ "ninja", "vcpkg" ]
+    },
+
+
+    {
+      "name": "msvc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "msvc-clang",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang-cl",
+        "CMAKE_CXX_COMPILER": "clang-cl"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gcc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+
+
+    {
+      "name": "x86",
+      "hidden": true,
+      "architecture": {
+        "value": "x86",
+        "strategy": "external"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Visual Studio x86"
+        }
+      }
+    },
+    {
+      "name": "x64",
+      "hidden": true,
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "vendor": {
+        "jetbrains.com/clion": {
+          "toolchain": "Visual Studio x64"
+        }
+      }
+    },
+
+
+    {
+      "name": "debug",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "relwithdebinfo",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "release",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+
+    { "name": "windows-msvc-x86-debug", "inherits": ["windows", "msvc", "x86", "debug"] },
+    { "name": "windows-msvc-x86-relwithdebinfo", "inherits": ["windows", "msvc", "x86", "relwithdebinfo"] },
+    { "name": "windows-msvc-x86-release", "inherits": ["windows", "msvc", "x86", "release"] },
+
+    { "name": "windows-msvc-x64-debug", "inherits": ["windows", "msvc", "x64", "debug"] },
+    { "name": "windows-msvc-x64-relwithdebinfo", "inherits": ["windows", "msvc", "x64", "relwithdebinfo"] },
+    { "name": "windows-msvc-x64-release", "inherits": ["windows", "msvc", "x64", "release"] },
+
+    { "name": "windows-msvc-clang-x86-debug", "inherits": ["windows", "msvc-clang", "x86", "debug"] },
+    { "name": "windows-msvc-clang-x86-relwithdebinfo", "inherits": ["windows", "msvc-clang", "x86", "relwithdebinfo"] },
+    { "name": "windows-msvc-clang-x86-release", "inherits": ["windows", "msvc-clang", "x86", "release"] },
+
+    { "name": "windows-msvc-clang-x64-debug", "inherits": ["windows", "msvc-clang", "x64", "debug"] },
+    { "name": "windows-msvc-clang-x64-relwithdebinfo", "inherits": ["windows", "msvc-clang", "x64", "relwithdebinfo"] },
+    { "name": "windows-msvc-clang-x64-release", "inherits": ["windows", "msvc-clang", "x64", "release"] },
+
+    { "name": "linux-gcc-x64-debug", "inherits": ["linux", "gcc", "x64", "debug"] },
+    { "name": "linux-gcc-x64-relwithdebinfo", "inherits": ["linux", "gcc", "x64", "relwithdebinfo"] },
+    { "name": "linux-gcc-x64-release", "inherits": ["linux", "gcc", "x64", "release"] },
+
+    { "name": "linux-clang-x64-debug", "inherits": ["linux", "clang", "x64", "debug"] },
+    { "name": "linux-clang-x64-relwithdebinfo", "inherits": ["linux", "clang", "x64", "relwithdebinfo"] },
+    { "name": "linux-clang-x64-release", "inherits": ["linux", "clang", "x64", "release"] }
   ],
   "buildPresets": [
-    {
-      "name": "ninja",
-      "configurePreset": "ninja",
-      "displayName": "Ninja"
-    },
-    {
-      "name": "ninja-vcpkg",
-      "configurePreset": "ninja-vcpkg",
-      "displayName": "Ninja with vcpkg"
-    }
+    { "name": "windows-msvc-x86-debug",  "configurePreset": "windows-msvc-x86-debug" },
+    { "name": "windows-msvc-x86-relwithdebinfo", "configurePreset": "windows-msvc-x86-relwithdebinfo" },
+    { "name": "windows-msvc-x86-release",  "configurePreset": "windows-msvc-x86-release" },
+
+    { "name": "windows-msvc-x64-debug",  "configurePreset": "windows-msvc-x64-debug" },
+    { "name": "windows-msvc-x64-relwithdebinfo", "configurePreset": "windows-msvc-x64-relwithdebinfo" },
+    { "name": "windows-msvc-x64-release",  "configurePreset": "windows-msvc-x64-release" },
+
+    { "name": "windows-msvc-clang-x86-debug",  "configurePreset": "windows-msvc-clang-x86-debug" },
+    { "name": "windows-msvc-clang-x86-relwithdebinfo", "configurePreset": "windows-msvc-clang-x86-relwithdebinfo" },
+    { "name": "windows-msvc-clang-x86-release",  "configurePreset": "windows-msvc-clang-x86-release" },
+
+    { "name": "windows-msvc-clang-x64-debug",  "configurePreset": "windows-msvc-clang-x64-debug" },
+    { "name": "windows-msvc-clang-x64-relwithdebinfo", "configurePreset": "windows-msvc-clang-x64-relwithdebinfo" },
+    { "name": "windows-msvc-clang-x64-release",  "configurePreset": "windows-msvc-clang-x64-release" },
+
+    { "name": "linux-gcc-x64-debug",  "configurePreset": "linux-gcc-x64-debug" },
+    { "name": "linux-gcc-x64-relwithdebinfo", "configurePreset": "linux-gcc-x64-relwithdebinfo" },
+    { "name": "linux-gcc-x64-release",  "configurePreset": "linux-gcc-x64-release" },
+
+    { "name": "linux-clang-x64-debug",  "configurePreset": "linux-clang-x64-debug" },
+    { "name": "linux-clang-x64-relwithdebinfo", "configurePreset": "linux-clang-x64-relwithdebinfo" },
+    { "name": "linux-clang-x64-release",  "configurePreset": "linux-clang-x64-release" }
   ],
   "testPresets": [
-    {
-      "name": "ninja",
-      "configurePreset": "ninja"
-    },
-    {
-      "name": "ninja-vcpkg",
-      "configurePreset": "ninja-vcpkg"
-    }
+    { "name": "windows-msvc-x86-debug",  "configurePreset": "windows-msvc-x86-debug" },
+    { "name": "windows-msvc-x86-relwithdebinfo", "configurePreset": "windows-msvc-x86-relwithdebinfo" },
+    { "name": "windows-msvc-x86-release",  "configurePreset": "windows-msvc-x86-release" },
+
+    { "name": "windows-msvc-x64-debug",  "configurePreset": "windows-msvc-x64-debug" },
+    { "name": "windows-msvc-x64-relwithdebinfo", "configurePreset": "windows-msvc-x64-relwithdebinfo" },
+    { "name": "windows-msvc-x64-release",  "configurePreset": "windows-msvc-x64-release" },
+
+    { "name": "windows-msvc-clang-x86-debug",  "configurePreset": "windows-msvc-clang-x86-debug" },
+    { "name": "windows-msvc-clang-x86-relwithdebinfo", "configurePreset": "windows-msvc-clang-x86-relwithdebinfo" },
+    { "name": "windows-msvc-clang-x86-release",  "configurePreset": "windows-msvc-clang-x86-release" },
+
+    { "name": "windows-msvc-clang-x64-debug",  "configurePreset": "windows-msvc-clang-x64-debug" },
+    { "name": "windows-msvc-clang-x64-relwithdebinfo", "configurePreset": "windows-msvc-clang-x64-relwithdebinfo" },
+    { "name": "windows-msvc-clang-x64-release",  "configurePreset": "windows-msvc-clang-x64-release" },
+
+    { "name": "linux-gcc-x64-debug",  "configurePreset": "linux-gcc-x64-debug" },
+    { "name": "linux-gcc-x64-relwithdebinfo", "configurePreset": "linux-gcc-x64-relwithdebinfo" },
+    { "name": "linux-gcc-x64-release",  "configurePreset": "linux-gcc-x64-release" },
+
+    { "name": "linux-clang-x64-debug",  "configurePreset": "linux-clang-x64-debug" },
+    { "name": "linux-clang-x64-relwithdebinfo", "configurePreset": "linux-clang-x64-relwithdebinfo" },
+    { "name": "linux-clang-x64-release",  "configurePreset": "linux-clang-x64-release" }
   ]
 }

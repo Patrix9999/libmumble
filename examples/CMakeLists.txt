@@ -40,6 +40,11 @@ target_link_libraries(libmumble_example_base
 # All examples follow the convention of naming their subdirectory the same as their target.
 # Therefore we can use the TARGET variable to reference the directory as well as the target.
 foreach(TARGET IN LISTS EXAMPLES)
+	file(COPY
+		"${CMAKE_CURRENT_SOURCE_DIR}/${TARGET}/config.toml"
+		DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}/"
+	)
+
 	add_subdirectory(${TARGET})
 
 	target_setup_default_flags(${TARGET})

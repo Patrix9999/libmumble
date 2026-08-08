@@ -26,7 +26,7 @@ namespace mumble {
 template< typename NetHeader > class Pack {
 public:
 	Pack(const Pack &pack) = default;
-	Pack(Pack &&pack)      = default;
+	Pack(Pack &&pack) noexcept = default;
 	Pack(const size_t dataSize = 0) : m_buf(sizeof(NetHeader) + dataSize) {}
 	virtual ~Pack() = default;
 

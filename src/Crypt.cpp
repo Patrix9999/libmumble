@@ -26,7 +26,7 @@ using namespace mumble;
 
 using P = Crypt::P;
 
-Crypt::Crypt(Crypt &&crypt) : m_p(std::exchange(crypt.m_p, nullptr)) {
+Crypt::Crypt(Crypt &&crypt) noexcept : m_p(std::exchange(crypt.m_p, nullptr)) {
 }
 
 Crypt::Crypt() : m_p(new P) {

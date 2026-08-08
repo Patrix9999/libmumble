@@ -43,7 +43,7 @@ using P = Peer::P;
 Peer::Peer() : m_p(new P) {
 }
 
-Peer::Peer(Peer &&peer) : m_p(std::exchange(peer.m_p, nullptr)) {
+Peer::Peer(Peer &&peer) noexcept : m_p(std::exchange(peer.m_p, nullptr)) {
 }
 
 Peer::~Peer() {

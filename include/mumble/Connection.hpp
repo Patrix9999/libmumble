@@ -35,7 +35,7 @@ public:
 		std::function< void(tcp::Pack &pack) > pack;
 	};
 
-	Connection(Connection &&connection);
+	Connection(Connection &&connection) noexcept;
 	Connection(const int32_t socketHandle, const bool server);
 	virtual ~Connection();
 

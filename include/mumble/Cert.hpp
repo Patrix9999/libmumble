@@ -29,7 +29,7 @@ public:
 
 	Cert();
 	Cert(const Cert &cert);
-	Cert(Cert &&cert);
+	Cert(Cert &&cert) noexcept;
 	Cert(void *handle);
 	Cert(const DerViewConst der);
 	Cert(const std::string_view pem, std::string_view password = {});

@@ -21,7 +21,7 @@ using Feedback = Connection::Feedback;
 using P        = Connection::P;
 using UniqueP  = Connection::UniqueP;
 
-Connection::Connection(Connection &&connection) : m_p(std::exchange(connection.m_p, nullptr)) {
+Connection::Connection(Connection &&connection) noexcept : m_p(std::exchange(connection.m_p, nullptr)) {
 }
 
 Connection::Connection(const int32_t socketHandle, const bool server)

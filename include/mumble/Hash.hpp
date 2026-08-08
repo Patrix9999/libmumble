@@ -17,7 +17,7 @@ class MUMBLE_EXPORT Hash : NonCopyable {
 public:
 	class P;
 
-	Hash(Hash &&crypt);
+	Hash(Hash &&crypt) noexcept;
 	Hash();
 	virtual ~Hash();
 

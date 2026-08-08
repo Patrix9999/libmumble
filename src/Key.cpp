@@ -34,7 +34,7 @@ Key::Key() : m_p(new P(EVP_PKEY_new())) {
 Key::Key(const Key &key) : m_p(new P(key.pem(), key.isPrivate())) {
 }
 
-Key::Key(Key &&key) : m_p(std::exchange(key.m_p, nullptr)) {
+Key::Key(Key &&key) noexcept : m_p(std::exchange(key.m_p, nullptr)) {
 }
 
 Key::Key(void *handle) : m_p(new P(static_cast< EVP_PKEY * >(handle))) {

@@ -17,7 +17,7 @@ class MUMBLE_EXPORT Crypt : NonCopyable {
 public:
 	class P;
 
-	Crypt(Crypt &&crypt);
+	Crypt(Crypt &&crypt) noexcept;
 	Crypt();
 	virtual ~Crypt();
 

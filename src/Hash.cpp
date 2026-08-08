@@ -27,7 +27,7 @@ using namespace mumble;
 
 using P = Hash::P;
 
-Hash::Hash(Hash &&crypt) : m_p(std::exchange(crypt.m_p, nullptr)) {
+Hash::Hash(Hash &&crypt) noexcept : m_p(std::exchange(crypt.m_p, nullptr)) {
 }
 
 Hash::Hash() : m_p(new P) {

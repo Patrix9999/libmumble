@@ -19,7 +19,7 @@ public:
 
 	Key();
 	Key(const Key &key);
-	Key(Key &&key);
+	Key(Key &&key) noexcept;
 	Key(void *handle);
 	Key(const std::string_view pem, const bool isPrivate, std::string_view password = {});
 	virtual ~Key();

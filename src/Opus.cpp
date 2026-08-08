@@ -78,7 +78,7 @@ uint32_t Opus::packetSamplesPerFrame(const BufViewConst packet, const uint32_t s
 	return ret >= 0 ? static_cast< uint32_t >(ret) : 0;
 }
 
-Decoder::Decoder(Decoder &&decoder) : m_p(std::exchange(decoder.m_p, nullptr)) {
+Decoder::Decoder(Decoder &&decoder) noexcept : m_p(std::exchange(decoder.m_p, nullptr)) {
 }
 
 Decoder::Decoder(const uint8_t channels) : m_p(new P(channels)) {
@@ -156,7 +156,7 @@ uint32_t Decoder::packetSamples(const BufViewConst packet) {
 Decoder::P::P(const uint8_t channels) : OpusBase(channels) {
 }
 
-Encoder::Encoder(Encoder &&encoder) : m_p(std::exchange(encoder.m_p, nullptr)) {
+Encoder::Encoder(Encoder &&encoder) noexcept : m_p(std::exchange(encoder.m_p, nullptr)) {
 }
 
 Encoder::Encoder(const uint8_t channels) : m_p(new P(channels)) {

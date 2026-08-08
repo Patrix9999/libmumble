@@ -43,7 +43,7 @@ class MUMBLE_EXPORT Opus::Decoder : public Opus {
 public:
 	class P;
 
-	Decoder(Decoder &&decoder);
+	Decoder(Decoder &&decoder) noexcept;
 	Decoder(const uint8_t channels);
 	virtual ~Decoder();
 
@@ -75,7 +75,7 @@ public:
 
 	class P;
 
-	Encoder(Encoder &&encoder);
+	Encoder(Encoder &&encoder) noexcept;
 	Encoder(const uint8_t channels);
 	virtual ~Encoder();
 

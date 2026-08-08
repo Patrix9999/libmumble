@@ -45,7 +45,7 @@ Cert::Cert() : m_p(new P(X509_new())) {
 Cert::Cert(const Cert &cert) : m_p(new P(X509_dup(cert.m_p->m_x509))) {
 }
 
-Cert::Cert(Cert &&cert) : m_p(std::exchange(cert.m_p, nullptr)) {
+Cert::Cert(Cert &&cert) noexcept : m_p(std::exchange(cert.m_p, nullptr)) {
 }
 
 Cert::Cert(void *handle) : m_p(new P(static_cast< X509 * >(handle))) {

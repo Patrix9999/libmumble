@@ -43,7 +43,7 @@ public:
 	};
 
 	Peer();
-	Peer(Peer &&peer);
+	Peer(Peer &&peer) noexcept;
 	virtual ~Peer();
 
 	virtual Peer &operator=(Peer &&peer);

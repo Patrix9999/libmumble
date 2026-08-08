@@ -1,4 +1,10 @@
-build/
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# Build files
+builds/
 _dependencies/
 
 compile_commands.json

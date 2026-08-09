@@ -8,6 +8,7 @@
 		"ms-gsl",
 		"openssl",
 		"opus",
-		"protobuf"
+		"protobuf",
+		"portaudio"
 	]
 }

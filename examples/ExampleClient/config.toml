@@ -1,10 +1,19 @@
 [local]
   tcpIP = "::"
   tcpPort = 0
+  udpIP = "::"
+  udpPort = 0
 
 [peer]
   tcpIP = "::1"
   tcpPort = 64738
+  udpIP = "::1"
+  udpPort = 64738
+
+[audio]
+  sampleRate = 48000
+  channels = 1
+  framesPerBuffer = 960
 
 [auth]
   username = "mumble"

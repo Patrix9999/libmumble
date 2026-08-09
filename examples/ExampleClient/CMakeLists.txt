@@ -3,6 +3,14 @@
 # that can be found in the LICENSE file at the root of the
 # Mumble source tree or at <https://www.mumble.info/LICENSE>.
 
+find_package(PortAudio CONFIG REQUIRED)
+
 add_executable(ExampleClient
 	"main.cpp"
+	"audio_helpers.cpp"
+)
+
+target_link_libraries(ExampleClient
+	PRIVATE
+		portaudio
 )

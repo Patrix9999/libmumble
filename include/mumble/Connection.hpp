@@ -9,7 +9,6 @@
 #include "Cert.hpp"
 #include "Key.hpp"
 #include "Macros.hpp"
-#include "NonCopyable.hpp"
 
 #include <functional>
 
@@ -18,7 +17,7 @@ namespace tcp {
 	class Pack;
 }
 
-class MUMBLE_EXPORT Connection : NonCopyable {
+class MUMBLE_EXPORT Connection {
 public:
 	class P;
 	using UniqueP = std::unique_ptr< P >;
@@ -41,8 +40,7 @@ public:
 
 	virtual explicit operator bool() const;
 
-	virtual Code operator()(
-		const Feedback &feedback, const std::function< bool() > halt = []() { return false; });
+	virtual Code operator()(const Feedback &feedback, const std::function< bool() > halt = []() { return false; });
 
 	virtual const UniqueP &p() const;
 	virtual int32_t socketHandle() const;
@@ -55,8 +53,7 @@ public:
 
 	virtual bool setCert(const Cert::Chain &cert, const Key &key);
 
-	virtual Code process(
-		const bool wait = true, const std::function< bool() > halt = []() { return false; });
+	virtual Code process(const bool wait = true, const std::function< bool() > halt = []() { return false; });
 	virtual Code write(
 		const BufViewConst data, const bool wait = true, const std::function< bool() > halt = []() { return false; });
 

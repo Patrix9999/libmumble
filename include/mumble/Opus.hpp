@@ -7,21 +7,20 @@
 #define MUMBLE_OPUS_HPP
 
 #include "Macros.hpp"
-#include "NonCopyable.hpp"
 #include "Types.hpp"
 
 #include <memory>
 
 namespace mumble {
-class MUMBLE_EXPORT Opus : NonCopyable {
+class MUMBLE_EXPORT Opus {
 public:
 	class Decoder;
 	class Encoder;
 
-	using FloatView        = gsl::span< float >;
-	using FloatViewConst   = gsl::span< const float >;
-	using IntegerView      = gsl::span< int16_t >;
-	using IntegerViewConst = gsl::span< const int16_t >;
+	using FloatView        = std::span< float >;
+	using FloatViewConst   = std::span< const float >;
+	using IntegerView      = std::span< int16_t >;
+	using IntegerViewConst = std::span< const int16_t >;
 
 	virtual explicit operator bool() const = 0;
 
@@ -34,9 +33,9 @@ public:
 	virtual bool togglePhaseInversion(const bool enable) = 0;
 
 	static uint8_t packetChannels(const BufViewConst packet);
-	static uint32_t packetFrames(const BufViewConst packet);
-	static uint32_t packetSamples(const BufViewConst packet, const uint32_t sampleRate);
-	static uint32_t packetSamplesPerFrame(const BufViewConst packet, const uint32_t sampleRate);
+	static uint32_t packetEncodedFrames(const BufViewConst packet);
+	static uint32_t packetFrames(const BufViewConst packet, const uint32_t sampleRate);
+	static uint32_t packetFramesPerEncodedFrame(const BufViewConst packet, const uint32_t sampleRate);
 };
 
 class MUMBLE_EXPORT Opus::Decoder : public Opus {
@@ -63,7 +62,7 @@ public:
 	virtual bool usesPhaseInversion() const override;
 	virtual bool togglePhaseInversion(const bool enable) override;
 
-	virtual uint32_t packetSamples(const BufViewConst packet);
+	virtual uint32_t packetFrames(const BufViewConst packet);
 
 private:
 	std::unique_ptr< P > m_p;

@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   skip_test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     outputs:
       should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
@@ -23,14 +23,14 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
+          - os: ubuntu-26.04
             triplet: x64-linux
-          - os: windows-latest
+          - os: windows-2022
             triplet: x64-windows-static-md
-          - os: windows-latest
+          - os: windows-2022
             triplet: x86-windows-static-md
-          - os: macos-latest
-            triplet: x64-osx
+          - os: macos-15
+            triplet: arm64-osx
 
     name: ${{matrix.triplet}}
     runs-on: ${{matrix.os}}
@@ -39,15 +39,15 @@ jobs:
       VCPKG_DEFAULT_TRIPLET: ${{matrix.triplet}}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - uses: lukka/get-cmake@latest
+      - uses: lukka/get-cmake@v4.4.2
 
       - uses: lukka/run-vcpkg@v11
 
-      - uses: lukka/run-cmake@v10.3
+      - uses: lukka/run-cmake@v10
         with:
           configurePreset: 'ninja-vcpkg'
           buildPreset: 'ninja-vcpkg'

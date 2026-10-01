@@ -12,10 +12,9 @@
 
 #include <cstdint>
 #include <limits>
+#include <span>
 #include <unordered_set>
 #include <vector>
-
-#include <gsl/span>
 
 #if defined(HAVE_EPOLL) || defined(HAVE_WEPOLL)
 struct epoll_event;
@@ -45,7 +44,7 @@ public:
 
 	static constexpr auto timeoutMax = std::numeric_limits< uint32_t >::max();
 
-	using EventsView = gsl::span< Event >;
+	using EventsView = std::span< Event >;
 
 	Monitor();
 	~Monitor();
@@ -63,7 +62,7 @@ public:
 	uint32_t wait(const EventsView events, const uint32_t timeout);
 
 private:
-	Monitor(const Monitor &) = delete;
+	Monitor(const Monitor &)            = delete;
 	Monitor &operator=(const Monitor &) = delete;
 #if defined(HAVE_EPOLL) || defined(HAVE_WEPOLL)
 	using Target = epoll_event;

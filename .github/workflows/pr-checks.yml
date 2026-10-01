@@ -4,28 +4,20 @@ on: [pull_request]
 
 jobs:
   pr-checks:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
 
     steps:
-    - name: Install Dependencies
-      run: sudo apt install libboost-thread-dev libopus-dev libprotobuf-dev
-      shell: bash
-
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
     - name: Check line endings
-      uses: erclu/check-crlf@v1
-
-    - name: Generate compile-command DB
-      run: mkdir build; cd build; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..; cd ..; ln -s build/compile_commands.json .
-      shell: bash
+      uses: erclu/check-crlf@c77fda0a97ea8944aba5f72796b9e937e7d1611c
 
     - name: Check code formatting
-      uses: jidicula/clang-format-action@v4.10.2
+      uses: jidicula/clang-format-action@v4.18.0
       with:
-          clang-format-version: '10'
+          clang-format-version: '20'
           check-path: '.'
           exclude-regex: '(build/.*|_dependencies/.*)'
           include-regex: '.*\.(cpp|hpp|c|h)$'

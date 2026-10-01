@@ -13,8 +13,7 @@
 #include <algorithm>
 #include <cstdint>
 
-#include <gsl/byte>
-#include <gsl/span>
+#include <span>
 
 using namespace mumble;
 
@@ -84,7 +83,7 @@ size_t User::decrypt(const BufView out, const BufViewConst in) {
 	const auto encrypted = in.subspan(4);
 	const auto prevNonce = m_decryptNonce;
 
-	gsl::span< uint8_t > nonce(reinterpret_cast< uint8_t * >(m_decryptNonce.data()), m_decryptNonce.size());
+	std::span< uint8_t > nonce(reinterpret_cast< uint8_t * >(m_decryptNonce.data()), m_decryptNonce.size());
 
 	bool restore = false;
 

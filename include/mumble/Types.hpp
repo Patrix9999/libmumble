@@ -14,9 +14,8 @@ namespace mumble {}
 
 #include <algorithm>
 #include <limits>
+#include <span>
 #include <vector>
-
-#include <gsl/span>
 
 namespace mumble {
 enum class Code : int8_t {
@@ -51,7 +50,7 @@ struct Endpoint {
 	virtual ~Endpoint() = default;
 
 	virtual Endpoint &operator=(const Endpoint &endpoint) = default;
-	virtual Endpoint &operator=(Endpoint &&endpoint) = default;
+	virtual Endpoint &operator=(Endpoint &&endpoint)      = default;
 
 	virtual bool operator==(const Endpoint &endpoint) const { return endpoint.ip == ip && endpoint.port == port; }
 };
@@ -107,8 +106,8 @@ struct Version {
 };
 
 using Buf          = std::vector< std::byte >;
-using BufView      = gsl::span< std::byte >;
-using BufViewConst = gsl::span< const std::byte >;
+using BufView      = std::span< std::byte >;
+using BufViewConst = std::span< const std::byte >;
 
 template< size_t size > using FixedBuf = std::array< std::byte, size >;
 

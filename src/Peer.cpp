@@ -311,6 +311,10 @@ void P::TCP::threadFunc(const uint32_t threads) {
 		}
 
 		num = m_monitor.wait(events, m_feedback.timeout ? m_feedback.timeout() : m_monitor.timeoutMax);
+
+		if (num == 0 && m_feedback.ping) {
+			m_feedback.ping();
+		}
 	}
 
 	if (m_feedback.stopped) {

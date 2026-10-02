@@ -74,7 +74,10 @@ static Connection::Feedback connectionFeedback(Connection &connection, std::cond
 	return feedback;
 }
 
-static Peer::FeedbackTCP peerFeedback() {
+static Peer::FeedbackTCP peerFeedback(Connection &connection) {
+	using Message = tcp::Message;
+	using Pack    = tcp::Pack;
+
 	Peer::FeedbackTCP feedback;
 
 	feedback.started = []() { printf("TCP started!\n"); };
@@ -83,6 +86,12 @@ static Peer::FeedbackTCP peerFeedback() {
 	feedback.failed = [](const Code code) { printf("TCP failed with error \"%s\"!\n", text(code).data()); };
 
 	feedback.timeout = []() { return 10000; };
+
+	feedback.ping = [&connection]() {
+		Message::Ping ping;
+		ping.timestamp = Message::Ping::Timestamp();
+		connection.write(Pack(ping).buf());
+	};
 
 	return feedback;
 }
@@ -135,7 +144,7 @@ int32_t main(const int argc, const char **argv) {
 
 	Peer client;
 	client.addTCP(connection);
-	code = client.startTCP(peerFeedback());
+	code = client.startTCP(peerFeedback(*connection));
 	if (code != Code::Success) {
 		printf("Peer::startTCP() failed with error \"%s\"!\n", text(code).data());
 		return 5;

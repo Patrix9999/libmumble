@@ -33,6 +33,7 @@ public:
 
 	struct FeedbackTCP : Feedback {
 		std::function< bool(Endpoint &endpoint, int32_t socketHandle) > connection;
+		std::function< void() > ping;
 	};
 
 	struct FeedbackUDP : Feedback {

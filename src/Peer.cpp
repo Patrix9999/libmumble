@@ -242,6 +242,9 @@ void P::TCP::threadFunc(const uint32_t threads) {
 
 	uint32_t num = 0;
 
+	const auto timeout = m_feedback.timeout ? m_feedback.timeout() : m_monitor.timeoutMax;
+	auto nextPingTime = mumble::Message::Clock::now() + std::chrono::milliseconds(timeout);
+
 	while (!m_halt) {
 		std::span< Event > view(events.data(), num);
 		pool->parallel_for_each(view, [this](Event &event) {
@@ -310,7 +313,13 @@ void P::TCP::threadFunc(const uint32_t threads) {
 			events.resize(m_monitor.num());
 		}
 
-		num = m_monitor.wait(events, m_feedback.timeout ? m_feedback.timeout() : m_monitor.timeoutMax);
+		num = m_monitor.wait(events, timeout);
+
+		auto now = Message::Clock::now();
+		if (nextPingTime <= now && m_feedback.ping) {
+			m_feedback.ping();
+			nextPingTime = now + std::chrono::milliseconds(timeout);
+		}
 	}
 
 	if (m_feedback.stopped) {

@@ -89,7 +89,7 @@ static Peer::FeedbackTCP peerFeedback(Connection &connection) {
 
 	feedback.ping = [&connection]() {
 		Message::Ping ping;
-		ping.timestamp = std::chrono::steady_clock::now();
+		ping.timestamp = mumble::Message::Clock::now();
 		connection.write(Pack(ping).buf());
 	};
 
